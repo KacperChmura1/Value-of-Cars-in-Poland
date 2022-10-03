@@ -4,7 +4,7 @@ from tensorflow.keras.models import load_model
 import pandas as pd
 from pickle import load
 model = load_model("Model/model_app.h5")
-df_dum = pd.read_csv("Data/df_app.csv")
+df_dum = pd.read_csv("df_app.csv")
 #Brands(to delete probably)
 brands_10k = {'Opel', 'Audi', 'BMW', 'Volkswagen', 'Škoda', 'Ford', 'Renault',
        'Mercedes-Benz', 'Toyota', 'Seat', 'Nissan', 'Kia', 'Hyundai',
