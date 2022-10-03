@@ -166,4 +166,5 @@ if ok:
        
 
        car_price = model.predict(to_pred)[-1]
-       st.markdown(f'<p style="font-family:Courier; color:Green; font-size: 30px;">Real Rating: {car_price[0]}</p>')
+       true_value = f'<p style="font-family:Courier; color:Green; font-size: 30px;">Predicted Value: {round(car_price[0])}PLN</p>'
+       st.markdown(true_value, unsafe_allow_html=True)
