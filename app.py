@@ -128,43 +128,43 @@ def model_selection(brand):
        if brand == brands_all[i]:
             model_c = st.selectbox("Vehicle model", models_list[i])
             return model_c
+def predict_car_value(df_dum):
+       st.title("Car Value Predictor")
+       page = 0
+       #page = st.selectbox("Price Range", {"0-10k","10k-25k","25k-50k","50k-100k","100k-200k"})
+       condition = st.selectbox("New or Used", {"New","Used"})
+       brand = st.selectbox("Vehicle Brand", brands_all)
+       model_c = model_selection(brand)
+       year = st.selectbox("Production Year", production_year)
+       millage_km = st.number_input("Millage(km)",step = 100)
+       power_hp = st.number_input("Power(hp)",step = 1)
+       displacement_cm3 = 	st.number_input("Displacement(cm3)",step = 1)
+       fuel_type = st.selectbox("Fuel Type", {'Diesel', 'Gasoline', 'Gasoline + LPG', 'Hybrid', 'Gasoline + CNG'})
+       drive = st.selectbox("Drive", {'Front wheels', 'Rear wheels', '4x4 (permanent)','4x4 (attached automatically)', '4x4 (attached manually)'})
+       transmission = st.selectbox("Transmission", {'Manual', 'Automatic'})
+       doors = st.selectbox("Doors Number", {5.,  3.,  2.,  4., 55.,  7.,  6.,  1.,  9.})
+       colour = st.selectbox("Colour", {'red', 'green', 'black', 'silver', 'blue', 'gray', 'white','burgundy', 'other', 'beige', 'brown', 'golden', 'yellow','violet'})
+       features = 30
+       ok = st.button("Calculate Price")
 
-st.title("Car Value Predictor")
-page = 0
-#page = st.selectbox("Price Range", {"0-10k","10k-25k","25k-50k","50k-100k","100k-200k"})
-condition = st.selectbox("New or Used", {"New","Used"})
-brand = st.selectbox("Vehicle Brand", brands_all)
-model_c = model_selection(brand)
-year = st.selectbox("Production Year", production_year)
-millage_km = st.number_input("Millage(km)",step = 100)
-power_hp = st.number_input("Power(hp)",step = 1)
-displacement_cm3 = 	st.number_input("Displacement(cm3)",step = 1)
-fuel_type = st.selectbox("Fuel Type", {'Diesel', 'Gasoline', 'Gasoline + LPG', 'Hybrid', 'Gasoline + CNG'})
-drive = st.selectbox("Drive", {'Front wheels', 'Rear wheels', '4x4 (permanent)','4x4 (attached automatically)', '4x4 (attached manually)'})
-transmission = st.selectbox("Transmission", {'Manual', 'Automatic'})
-doors = st.selectbox("Doors Number", {5.,  3.,  2.,  4., 55.,  7.,  6.,  1.,  9.})
-colour = st.selectbox("Colour", {'red', 'green', 'black', 'silver', 'blue', 'gray', 'white','burgundy', 'other', 'beige', 'brown', 'golden', 'yellow','violet'})
-features = 30
-ok = st.button("Calculate Price")
+       if ok:
+              car_df = pd.DataFrame(data = [[0, condition, brand, model_c, year, millage_km, power_hp, displacement_cm3,fuel_type, drive, transmission, doors, colour, features]], columns =
+              ['Price', 'Condition', 'Vehicle_brand', 'Vehicle_model',
+              'Production_year', 'Mileage_km', 'Power_HP', 'Displacement_cm3',
+              'Fuel_type', 'Drive', 'Transmission', 'Doors_number', 'Colour',
+              'Features'] )
+              #model.predic([[condition,brand,year,millage_km,pow]])
 
-if ok:
-       car_df = pd.DataFrame(data = [[0, condition, brand, model_c, year, millage_km, power_hp, displacement_cm3,fuel_type, drive, transmission, doors, colour, features]], columns =
-       ['Price', 'Condition', 'Vehicle_brand', 'Vehicle_model',
-       'Production_year', 'Mileage_km', 'Power_HP', 'Displacement_cm3',
-       'Fuel_type', 'Drive', 'Transmission', 'Doors_number', 'Colour',
-       'Features'] )
-       #model.predic([[condition,brand,year,millage_km,pow]])
+              car_dum = pd.DataFrame(car_df)
+              car_dum = pd.get_dummies(car_dum)
+              df_dum = df_dum.append(car_dum).fillna(0)
+              
+              scaler = load(open('Scalers/scaler_app.pkl', 'rb'))
+              X_car = df_dum.drop(["Price","Unnamed: 0"], axis = 1)
+              # jeden feature za duzo
+              to_pred = scaler.transform(X_car)
+              
 
-       car_dum = pd.DataFrame(car_df)
-       car_dum = pd.get_dummies(car_dum)
-       df_dum = df_dum.append(car_dum).fillna(0)
-       
-       scaler = load(open('Scalers/scaler_app.pkl', 'rb'))
-       X_car = df_dum.drop(["Price","Unnamed: 0"], axis = 1)
-       # jeden feature za duzo
-       to_pred = scaler.transform(X_car)
-       
-
-       car_price = model.predict(to_pred)[-1]
-       true_value = f'<p style="font-family:Courier; color:Green; font-size: 30px;">Predicted Value: {round(car_price[0])}PLN</p>'
-       st.markdown(true_value, unsafe_allow_html=True)
+              car_price = model.predict(to_pred)[-1]
+              true_value = f'<p style="font-family:Courier; color:Green; font-size: 30px;">Predicted Value: {round(car_price[0])}PLN</p>'
+              st.markdown(true_value, unsafe_allow_html=True)
