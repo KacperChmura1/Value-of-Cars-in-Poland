@@ -1,4 +1,3 @@
-
 from enum import unique
 import streamlit as st
 from tensorflow.keras.models import load_model
@@ -138,8 +137,7 @@ def predict_car_value(df2):
               y.append(x)    
        ok = st.button("Calculate Price")
 
-       if ok:
-              st.markdown(y)   
+       if ok:  
               car_df = pd.DataFrame(data = [[0, condition, brand, model_c, year, millage_km, power_hp, displacement_cm3,fuel_type, drive, transmission,type, doors, colour,y[0],
 y[1],
 y[2],
@@ -234,15 +232,12 @@ y[69],month,to_day_year]], columns = ['Price', 'Condition', 'Vehicle_brand', 'Ve
        'Four-zoneairconditioning', 'TVtuner', 'Roofrails',
        'Activecruisecontrol', 'Hook', 'Laneassistant', 'HUD(head-updisplay)',
        'Month', 'Year'])
-              #model.predic([[condition,brand,year,millage_km,pow]])
 
-              #car_dum = pd.DataFrame(car_df)
               df2 = df2.append(car_df).fillna(0)
               car_dum = pd.get_dummies(df2,drop_first=True)
               scaler = load(open('Scalers/scaler_with_features.pkl', 'rb'))
               X_car = car_dum.drop(["Price",'Unnamed: 0'], axis = 1)
               X_car = X_car.iloc[[1,-1]]
-              # jeden feature za duzo
               to_pred = scaler.transform(X_car)
               car_price = model.predict(to_pred)[-1]
               true_value = f'<p style="font-family:Courier; color:Green; font-size: 30px;">Predicted Value: {round(car_price[0])}PLN</p>'
