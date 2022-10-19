@@ -8,7 +8,7 @@ from datetime import datetime
 model = load_model("Model/model_with_features_under_200k.h5")
 df2 = pd.read_csv("Data/app.csv")
 
-#Models
+#Models by Brands
 Opel = ['Astra', 'Insignia', 'Corsa', 'Zafira', 'Meriva', 'Vectra',
        'Mokka', 'Vivaro', 'Grandland X', 'Crossland X', 'Combo', 'Signum',
        'Antara', 'Agila']
@@ -92,6 +92,7 @@ production_year = {2015, 2006, 2010, 2007, 2008, 2005, 2013, 2011, 2002, 2018, 2
        1990, 1980, 1988, 1989, 1982, 1985, 1983, 1986, 1978, 1977, 1979,
        1981, 1984, 1973, 1976, 1966, 1970, 1971, 1968, 1963, 1965, 1967,
        1964, 1972, 1969, 1961, 1974}
+#Featues
 unique_features = ['ABS','Electricfrontwindows','Driversairbag','Powersteering','ASR(tractioncontrol)',
  'Rearviewcamera','Heatedsidemirrors','CD','Electricallyadjustablemirrors','Passengersairbag',
  'Alarm','Bluetooth','Automaticairconditioning','Airbagprotectingtheknees','Centrallocking','Immobilizer','Factoryradio','Alloywheels','Rainsensor','On-boardcomputer','Multifunctionsteeringwheel','AUXsocket','Xenonlights','USBsocket','MP3','ESP(stabilizationofthetrack)','Frontsideairbags','Rearparkingsensors',
@@ -106,7 +107,6 @@ def model_selection(brand):
 def predict_car_value(df2):
        st.title("Car Value Predictor")
        page = 0
-       #page = st.selectbox("Price Range", {"0-10k","10k-25k","25k-50k","50k-100k","100k-200k"})
        condition = st.selectbox("New or Used", {"New","Used"})
        brand = st.selectbox("Vehicle Brand", brands_all)
        model_c = model_selection(brand)
@@ -138,76 +138,11 @@ def predict_car_value(df2):
        ok = st.button("Calculate Price")
 
        if ok:  
-              car_df = pd.DataFrame(data = [[0, condition, brand, model_c, year, millage_km, power_hp, displacement_cm3,fuel_type, drive, transmission,type, doors, colour,y[0],
-y[1],
-y[2],
-y[3],
-y[4],
-y[5],
-y[6],
-y[7],
-y[8],
-y[9],
-y[10],
-y[11],
-y[12],
-y[13],
-y[14],
-y[15],
-y[16],
-y[17],
-y[18],
-y[19],
-y[20],
-y[21],
-y[22],
-y[23],
-y[24],
-y[25],
-y[26],
-y[27],
-y[28],
-y[29],
-y[30],
-y[31],
-y[32],
-y[33],
-y[34],
-y[35],
-y[36],
-y[37],
-y[38],
-y[39],
-y[40],
-y[41],
-y[42],
-y[43],
-y[44],
-y[45],
-y[46],
-y[47],
-y[48],
-y[49],
-y[50],
-y[51],
-y[52],
-y[53],
-y[54],
-y[55],
-y[56],
-y[57],
-y[58],
-y[59],
-y[60],
-y[61],
-y[62],
-y[63],
-y[64],
-y[65],
-y[66],
-y[67],
-y[68],
-y[69],month,to_day_year]], columns = ['Price', 'Condition', 'Vehicle_brand', 'Vehicle_model',
+              car_df = pd.DataFrame(data = [[0, condition, brand, model_c, year, millage_km, power_hp, displacement_cm3,fuel_type, drive, transmission,type, doors, colour,y[0],y[1],y[2],y[3],y[4],y[5],y[6],y[7],y[8],y[9],y[10],
+                    y[11],y[12],y[13],y[14],y[15],y[16],y[17],y[18],y[19],y[20],y[21],y[22],y[23],y[24],y[25],y[26],y[27],y[28],y[29],y[30],y[31],y[32],y[33],y[34],y[35],y[36],y[37],y[38],y[39],y[40],y[41],y[42],y[43],y[44],y[45],
+                    y[46],y[47],y[48],y[49],y[50],y[51],y[52],y[53],y[54],y[55],y[56],y[57],y[58],y[59],y[60],y[61],y[62],y[63],y[64],y[65],y[66],y[67],y[68],y[69],
+                    month,to_day_year]],
+                      columns = ['Price', 'Condition', 'Vehicle_brand', 'Vehicle_model',
        'Production_year', 'Mileage_km', 'Power_HP', 'Displacement_cm3',
        'Fuel_type', 'Drive', 'Transmission', 'Type', 'Doors_number', 'Colour',
        'ABS', 'Electricfrontwindows', 'Driversairbag', 'Powersteering',
@@ -232,7 +167,6 @@ y[69],month,to_day_year]], columns = ['Price', 'Condition', 'Vehicle_brand', 'Ve
        'Four-zoneairconditioning', 'TVtuner', 'Roofrails',
        'Activecruisecontrol', 'Hook', 'Laneassistant', 'HUD(head-updisplay)',
        'Month', 'Year'])
-
               df2 = df2.append(car_df).fillna(0)
               car_dum = pd.get_dummies(df2,drop_first=True)
               scaler = load(open('Scalers/scaler_with_features.pkl', 'rb'))
