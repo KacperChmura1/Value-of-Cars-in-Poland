@@ -6,7 +6,7 @@ from pickle import load
 import numpy as np
 from datetime import datetime
 model = load_model("Model/model_with_features_under_200k.h5")
-df2 = pd.read_csv("app.csv")
+df2 = pd.read_csv("C:/Users/kacpe/Desktop/programowanie/Programowanie_w_Python/Car_Value_Project/app.csv")
 
 #Models by Brands
 Opel = ['Astra', 'Insignia', 'Corsa', 'Zafira', 'Meriva', 'Vectra',
