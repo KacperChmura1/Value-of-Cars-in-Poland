@@ -16,7 +16,7 @@ def model_selection(brand):
        if brand == brands_all[i]:
             model_c = st.selectbox("Vehicle model", models_list[i])
             return model_c
-def predict_car_value(df2):
+def predict_car_value_ann(df2):
        st.title("Car Value Predictor")
        page = 0
        condition = st.selectbox("New or Used", {"New","Used"})
@@ -36,7 +36,7 @@ def predict_car_value(df2):
        features2 = st.multiselect("Features",unique_features)
        month = int(datetime.now().month)
        to_day_year = int(datetime.now().year)
-       
+
        x = 0
        i = 0
        y = []
